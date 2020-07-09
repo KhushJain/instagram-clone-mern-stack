@@ -40,25 +40,28 @@ const CreatePost = () => {
     }, [url]);
 
     const postDetails = () => {
-        setLoading(true);
-        const data = new FormData();
-        data.append("file", image);
-        data.append("upload_preset", "insta-clone");
-        data.append("cloud_name", "khush");
-
-        fetch("	https://api.cloudinary.com/v1_1/khush/image/upload", {
-            method: "post",
-            body: data
-        })
-        .then(response => response.json())
-        .then(data => {
-            setUrl(data.url);
-        })
-        .catch(e => {
-            setLoading(false);
-            console.log(e);
-        });
-
+        if (!image || !title || !body) {
+            M.toast({html: 'Please add all the fields!', classes:"#c62828 red darken-3"});
+        } else {
+            setLoading(true);
+            const data = new FormData();
+            data.append("file", image);
+            data.append("upload_preset", "insta-clone");
+            data.append("cloud_name", "khush");
+    
+            fetch("	https://api.cloudinary.com/v1_1/khush/image/upload", {
+                method: "post",
+                body: data
+            })
+            .then(response => response.json())
+            .then(data => {
+                setUrl(data.url);
+            })
+            .catch(e => {
+                setLoading(false);
+                console.log(e);
+            });
+        }
     };
 
 

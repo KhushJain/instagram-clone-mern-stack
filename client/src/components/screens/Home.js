@@ -148,7 +148,7 @@ const Home = () => {
                         <h5 style={{ padding: '5px' }}><Link to={item.postedBy._id !== state._id ? "/profile/" + item.postedBy._id : "/profile"}>{item.postedBy.name} </Link>
                             {
                                 item.postedBy._id === state._id
-                                &&<i className="material-icons" style={{ float: "right", cursor:"pointer" }} onClick={() => deletePost(item._id)} >delete</i>
+                                &&<i className="material-icons" style={{ float: "right", cursor:"pointer" }} onClick={() => {if(window.confirm("Are you sure to delete this post? This action can't be undone!")){ deletePost(item._id)};}} >delete</i>
                             }
                         </h5>
                         <div className="card-image">

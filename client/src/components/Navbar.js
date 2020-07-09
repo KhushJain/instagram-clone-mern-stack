@@ -56,6 +56,9 @@ const Navbar = () => {
     .then(res => {
       setUsersDetails(res.data.users);
     })
+    .catch(e => {
+      console.log(e);
+    })
   };
 
 
@@ -70,6 +73,7 @@ const Navbar = () => {
       <div id="modal1" className="modal" ref={searchModal} style={{ color: "black" }}>
         <div className="modal-content">
           <input type="text" placeholder="search users by email" value={search} onChange={(event) => fetchUsers(event.target.value)} />
+          {state ?
           <ul className="collection">
             { usersDetails.map(item => {
                 return <Link key={item._id} to={item._id === state._id ? "/profile" : "/profile/" + item._id} onClick={() => {
@@ -80,6 +84,8 @@ const Navbar = () => {
                 </Link>   
           }) }
           </ul>
+          :<></>  
+          }
         </div>
         <div className="modal-footer">
           <button className="modal-close waves-effect waves-green btn-flat" onClick={() => setSearch('')}>close</button>

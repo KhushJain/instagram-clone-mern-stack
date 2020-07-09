@@ -53,6 +53,9 @@ const UserProfile = () => {
             });
             setShowFollow(false);
         })
+        .catch(e => {
+            console.log(e);
+        })
     };
 
 
@@ -78,6 +81,9 @@ const UserProfile = () => {
                 };
             });
             setShowFollow(true);
+        })
+        .catch(e => {
+            console.log(e);
         })
     };
 
