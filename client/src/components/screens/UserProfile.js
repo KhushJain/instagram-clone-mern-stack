@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { UserContext } from '../../App';
 import axios from 'axios';
+import Spinner from '../Spinner';
 
 const UserProfile = () => {
 
@@ -9,9 +10,11 @@ const UserProfile = () => {
     const { state, dispatch } = useContext(UserContext);
     const { userid } = useParams();
     const [showFollow, setShowFollow] = useState(state?!state.following.includes(userid):true);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
+        setLoading(true);
         axios.get(`/user/${userid}`, {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -19,6 +22,11 @@ const UserProfile = () => {
         })
         .then(res => {
             setUserProfile(res.data)
+            setLoading(false);
+        })
+        .catch(e => {
+            setLoading(false);
+            console.log(e);
         })
 
     }, [])
@@ -74,7 +82,7 @@ const UserProfile = () => {
     };
 
 
-    return (
+    let display = (
         <>
         {userProfile ? 
                 <div style={{ maxWidth: "550px", margin: "0px auto" }}>
@@ -108,6 +116,15 @@ const UserProfile = () => {
             </div>
             : <h2>Loading...</h2>}
 
+        </>
+    );
+
+    if (loading) display = <Spinner />;
+
+
+    return (
+        <>
+        {display}
         </>
     )
 };

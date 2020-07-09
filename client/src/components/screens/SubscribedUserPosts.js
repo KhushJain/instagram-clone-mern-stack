@@ -3,13 +3,16 @@ import { UserContext } from '../../App';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import M from 'materialize-css';
+import Spinner from '../Spinner';
 
 const Home = () => {
 
     const [data, setData] = useState([]);
     const { state, dispatch } = useContext(UserContext);
+    const [loading, setLoading] = useState(false);
     
     useEffect(() => {
+        setLoading(true);
         axios.get('/getsubscribedposts', {
             headers: {
                 "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -17,8 +20,10 @@ const Home = () => {
         })
         .then(result => {
             setData(result.data.posts);
+            setLoading(false);
         })
         .catch(e => {
+            setLoading(false);
             console.log(e);
         })
 
@@ -135,8 +140,8 @@ const Home = () => {
     };
 
 
-    return (
-        <div>
+    let display = (
+        <>
             {
                 data.map(item => (
                     <div className="card home-card" key={item._id}>
@@ -181,6 +186,15 @@ const Home = () => {
                     </div>
                 ))
             }
+        </>
+    );
+
+    if (loading) display = <Spinner />;
+
+
+    return (
+        <div>
+            {display}
         </div>
     )
 };

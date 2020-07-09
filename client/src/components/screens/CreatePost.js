@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import M from 'materialize-css';
+import Spinner from '../Spinner';
+
 
 const CreatePost = () => {
 
@@ -10,6 +12,8 @@ const CreatePost = () => {
     const [body, setBody] = useState("");
     const [image, setImage] = useState("");
     const [url, setUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
         if(url) {
@@ -25,15 +29,18 @@ const CreatePost = () => {
                     else {
                         M.toast({html: response.data.message, classes:"#43a047 green darken-1"});
                         history.push('/');
-                    }            
+                    }           
+                    setLoading(false); 
                 })
                 .catch(e =>{
+                    setLoading(false);
                     console.log(e);
                 });
         }
     }, [url]);
 
     const postDetails = () => {
+        setLoading(true);
         const data = new FormData();
         data.append("file", image);
         data.append("upload_preset", "insta-clone");
@@ -48,13 +55,15 @@ const CreatePost = () => {
             setUrl(data.url);
         })
         .catch(e => {
+            setLoading(false);
             console.log(e);
         });
 
     };
 
-    return (
-        <div className="card input-filed" style={{ margin: "30px auto", maxWidth: "500px", padding: "20px", textAlign:"center" }}>
+
+    let display = (
+        <>
             <input type="text" placeholder="title" value={title} onChange={(event) => setTitle(event.target.value)} />
             <input type="text" placeholder="body" value={body} onChange={(event) => setBody(event.target.value)} />
             <div className="file-field input-field">
@@ -67,6 +76,15 @@ const CreatePost = () => {
                 </div>
             </div>
             <button onClick={() => postDetails()} className="btn waves-effect waves-light #64b5f6 blue darken-1">Submit Post</button>
+        </>
+    );
+
+    if (loading) display = <Spinner />
+
+
+    return (
+        <div className="card input-filed" style={{ margin: "30px auto", maxWidth: "500px", padding: "20px", textAlign:"center" }}>
+            {display}
         </div>
     );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import M from 'materialize-css';
+import Spinner from '../Spinner';
 
 const Signup = () => {
     
@@ -11,6 +12,7 @@ const Signup = () => {
     const [email, setEmail] = useState("");
     const [image, setImage] = useState("");
     const [url, setUrl] = useState(undefined);
+    const [loading, setLoading] = useState(false);
 
 
     useEffect(() => {
@@ -29,44 +31,18 @@ const Signup = () => {
                 else {
                     M.toast({html: response.data.message, classes:"#43a047 green darken-1"});
                     history.push('/signin');
-                }            
+                }
+                setLoading(false);            
             })
             .catch(e =>{
+                setLoading(false);
                 console.log(e);
             })
-
-        // if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)) {
-        //     M.toast({html: "Invalid Email", classes:"#c62828 red darken-3"});
-        //     return ;
-        // }
-        // fetch("http://localhost:5000/signup", {
-        //     method: "post",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //         name,
-        //         password,
-        //         email
-        //     })
-        // }).then(response => response.json())
-        // .then(data => {
-        //     if (data.error) {
-        //         M.toast({html: data.error, classes:"#c62828 red darken-3"});
-        //     }
-        //     else {
-        //         M.toast({html: data.message, classes:"#43a047 green darken-1"});
-        //         history.push('/signin');
-        //     }
-        // })
-        // .catch(e =>{
-        //     console.log(e);
-        // })
     };
 
 
     const postData = () => {
-
+        setLoading(true);
         if (image) {
             uploadProfilePhoto();
         } else {
@@ -98,25 +74,33 @@ const Signup = () => {
     };
 
 
+    let display = (
+        <div className="card auth-card input-field">
+            <h2>Instagram</h2>
+            <input type="text" placeholder="name" value={name} onChange={(event) => setName(event.target.value)} />
+            <input type="text" placeholder="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+            <input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+            <div className="file-field input-field">
+                <div className="btn #64b5f6 blue darken-1">
+                    <span>Upload Profile Photo</span>
+                    <input type="file" onChange={(event) => setImage(event.target.files[0])} />
+                </div>
+                <div className="file-path-wrapper">
+                    <input className="file-path validate" type="text" />
+                </div>
+            </div>                
+            <button className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => postData()} >SignUp</button>
+            <h6>Already have an account?<Link to="/signin"><span style={{ color: 'rgb(8, 93, 252)' }}> SignIn</span></Link></h6>
+        </div>
+    );
+
+
+    if (loading) display = <Spinner />
+
+
     return (
         <div className="mycard">
-            <div className="card auth-card input-field">
-                <h2>Instagram</h2>
-                <input type="text" placeholder="name" value={name} onChange={(event) => setName(event.target.value)} />
-                <input type="text" placeholder="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-                <input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-                <div className="file-field input-field">
-                    <div className="btn #64b5f6 blue darken-1">
-                        <span>Upload Profile Photo</span>
-                        <input type="file" onChange={(event) => setImage(event.target.files[0])} />
-                    </div>
-                    <div className="file-path-wrapper">
-                        <input className="file-path validate" type="text" />
-                    </div>
-                </div>                
-                <button className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => postData()} >SignUp</button>
-                <h6>Already have an account?<Link to="/signin"><span style={{ color: 'rgb(8, 93, 252)' }}> SignIn</span></Link></h6>
-            </div>
+            {display}
         </div>
     )
 };
