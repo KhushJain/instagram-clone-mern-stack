@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Joi = require('Joi'); // For validating the data
+const Joi = require('joi'); // For validating the data
 const { JWT_SECRET } = require('../config/keys');
 const jwt = require('jsonwebtoken');
 const { ObjectId } = mongoose.Schema.Types
