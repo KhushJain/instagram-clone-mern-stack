@@ -24,6 +24,8 @@ const userSchema = new mongoose.Schema({
         minlength: 5,
         maxlength: 1024
     },
+    resetToken: String,
+    expireToken: Date,
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -36,6 +38,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "https://res.cloudinary.com/khush/image/upload/v1594273772/2_jcukwd.png"
     }
+}, {
+    timestamps: true
 });
 
 userSchema.methods.generateAuthToken = function() {

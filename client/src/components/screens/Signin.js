@@ -38,6 +38,7 @@ const Signin = () => {
                 <input type="text" placeholder="email" value={email} onChange={(event) => setEmail(event.target.value)} />
                 <input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} />
                 <button className="btn waves-effect waves-light #64b5f6 blue darken-1" onClick={() => postData()} >Login</button>
+                <h6><Link to="/reset" ><span style={{ color: 'rgb(8, 93, 252)' }}> Forgot password?</span></Link></h6>
                 <h6>Don't have an account?<Link to="/signup" ><span style={{ color: 'rgb(8, 93, 252)' }}> SignUp</span></Link></h6>
             </div>
         </div>

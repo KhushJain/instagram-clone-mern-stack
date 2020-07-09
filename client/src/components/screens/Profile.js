@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { UserContext } from '../../App';
 import axios from 'axios';
+import M from 'materialize-css';
+
 
 const Profile = () => {
 
@@ -44,6 +46,7 @@ const Profile = () => {
                 .then(res => {
                     localStorage.setItem("user", JSON.stringify({...state, profilePhoto: res.data.profilePhoto}));
                     dispatch({ type:"UPDATEPROFILEPHOTO", payload: res.data.profilePhoto });
+                    M.toast({html: "Profile Pic Updated!", classes:"#43a047 green darken-1"});
                     //window.location.reload();
                 })
             })
