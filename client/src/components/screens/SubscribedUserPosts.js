@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { UserContext } from '../../App';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -7,9 +7,11 @@ import Spinner from '../Spinner';
 
 const Home = () => {
 
+    const likesModalSubscribed = useRef(null);
     const [data, setData] = useState([]);
     const { state, dispatch } = useContext(UserContext);
     const [loading, setLoading] = useState(false);
+    const [likedUserDetails, setLikedUserDetails] = useState([]);
     
     useEffect(() => {
         setLoading(true);
@@ -140,6 +142,24 @@ const Home = () => {
     };
 
 
+    const likedUsers = (postId) => {
+        M.Modal.init(likesModalSubscribed.current);
+        axios.post('/likedusers', { postId }, {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+        .then(res => {
+            setLikedUserDetails(res.data.users);
+            M.Modal.getInstance(likesModalSubscribed.current).open();
+        })
+        .catch(e => {
+            console.log(e);
+        })
+    };
+
+
     let display = (
         <>
             {
@@ -160,7 +180,7 @@ const Home = () => {
                                 ? <i className="material-icons" style={{ cursor:"pointer" }} onClick={() => unlikePost(item._id)}>thumb_down</i>
                                 : <i className="material-icons" style={{ cursor:"pointer" }} onClick={() => likePost(item._id)}>thumb_up</i>
                             }
-                            <h6>{item.likes.length} <i className="material-icons" style={{ color: "red" }}>favorite</i></h6>
+                            <h6 data-target="modalLikesSubscribed" className="modal-trigger" style={{ cursor: "pointer" }} onClick={() => likedUsers(item._id)} >{item.likes.length} <i className="material-icons" style={{ color: "red" }}>favorite</i></h6>
                             <h6>{item.title}</h6>
                             <p>{item.body}</p>
                             {
@@ -186,6 +206,28 @@ const Home = () => {
                     </div>
                 ))
             }
+            <div id="modalLikesSubscribed" className="modal" ref={likesModalSubscribed} style={{ color: "black" }}>
+                <div className="modal-content">
+                    <h5>Liked by: </h5>
+                    {likedUserDetails ?
+                    <ul className="collection">
+                        { likedUserDetails.map(item => {
+                            return <Link key={item._id} to={item._id === state._id ? "/profile" : "/profile/" + item._id} onClick={() => {
+                            setLikedUserDetails([]);
+                            M.Modal.getInstance(likesModalSubscribed.current).close();
+                            M.Modal.getInstance(likesModalSubscribed.current).destroy();
+                            }}>
+                            <li className="collection-item">{item.name} - {item.email}</li>
+                            </Link>   
+                    }) }
+                    </ul>
+                    :<></>  
+                    }
+                </div>
+                <div className="modal-footer">
+                    <button className="modal-close waves-effect waves-green btn-flat" onClick={() => {setLikedUserDetails([]); M.Modal.getInstance(likesModalSubscribed.current).destroy(); }}>close</button>
+                </div>
+            </div>        
         </>
     );
 

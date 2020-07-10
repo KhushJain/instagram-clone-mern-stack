@@ -2,6 +2,7 @@ const router = require('express').Router();
 const mongoose = require('mongoose');
 const requireLogin = require('../middleware/requireLogin');
 const Post = mongoose.model('Post');
+const User = mongoose.model('User');
 
 
 router.get('/allpost', requireLogin, (req, res) => {
@@ -165,6 +166,22 @@ router.delete('/deletecomment/:postId/:commentId', requireLogin, (req, res) => {
         })
         
     })
+});
+
+
+router.post('/likedusers', requireLogin, (req, res) => {
+    Post.findById( req.body.postId )
+        .populate('postedBy', '_id name email')
+        .then(post => {
+            User.find({ _id: {$in: post.likes} })
+                .select('_id name email')
+                .then(users => {
+                    res.json({ users })
+                })
+        })
+        .catch(e => {
+            console.error(e);
+        });
 });
 
 
