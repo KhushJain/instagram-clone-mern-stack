@@ -101,4 +101,45 @@ router.post('/searchusers', requireLogin, (req, res) => {
 });
 
 
+router.delete('/deleteaccount', requireLogin, (req, res) => {
+    userId = req.user._id
+    User.findById(userId)
+        .then(user => {
+            user.followers.map(followersId => {
+                    User.findByIdAndUpdate(followersId, {
+                        $pull: { following: userId }
+                    }, {
+                        new: true
+                    }, (err, result) => {
+                        if (err) {
+                            return res.json({ error: err });
+                        }
+                    })
+            });
+            user.following.map(followingId => {
+                User.findByIdAndUpdate(followingId, {
+                    $pull: { followers: userId }
+                }, {
+                    new: true
+                }, (err, result) => {
+                    if (err) {
+                        return res.json({ error: err });
+                    }
+                })
+        })
+        })
+    User.deleteOne({ _id: userId }, (err, result) => {
+        if (err) {
+            return res.json({ error: err });
+        }
+        Post.deleteMany({ postedBy: userId }, (err, result) => {
+            if (err) {
+                return res.json({ error: err });
+            }
+            res.json({ message: 'Account deleted!' });
+        })
+    })
+});
+
+
 module.exports = router;

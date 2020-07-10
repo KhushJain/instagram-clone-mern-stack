@@ -3,6 +3,7 @@ import { UserContext } from '../../App';
 import axios from 'axios';
 import M from 'materialize-css';
 import Spinner from '../Spinner';
+import { useHistory } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -12,6 +13,7 @@ const Profile = () => {
     const [image, setImage] = useState("");
     const [loading, setLoading] = useState(false);
     const [loadingProfile, setLoadingProfile] = useState(false);
+    const history = useHistory();
 
     useEffect(() => {
         setLoading(true);
@@ -69,6 +71,25 @@ const Profile = () => {
     }, [image])
 
 
+    const deleteUser = () => {
+        axios.delete('/deleteaccount', {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+        .then(res => {
+            localStorage.clear()
+            dispatch({type:"CLEAR"})
+            M.toast({html: res.data.message, classes:"#43a047 green darken-1"});
+            history.push('/signin');
+        })
+        .catch(e => {
+            M.toast({html: "Something went wrong, try again!", classes:"#c62828 red darken-3"});
+            console.log(e)
+        })
+    };
+
+
     let display = (
         <>
         <div style={{ margin: "18px 0px", borderBottom: "1px solid grey" }}>
@@ -89,7 +110,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="file-field input-field" style={{ margin:"10px", marginLeft: "33px" }}>
-                <div className="btn #64b5f6 blue darken-1">
+                <div className="btn #212121 grey darken-4">
                     <span>Edit Profile Photo</span>
                     <input type="file" id="file-input-value" onChange={(e)=>setImage(e.target.files[0])} />
                 </div>
@@ -97,6 +118,7 @@ const Profile = () => {
                     <input className="file-path validate" type="text" />
                 </div>
             </div>
+            <button style={{ marginLeft: "40px", marginBottom: "7px" }} className="btn waves-effect waves-light #b71c1c red darken-4" onClick={() => {if(window.confirm("Are you sure to delete this account? This action can't be undone!")){ deleteUser()};}} >Delete Account</button>
         </div>
 
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>

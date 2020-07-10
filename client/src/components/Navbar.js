@@ -84,7 +84,8 @@ const Navbar = () => {
             { usersDetails.map(item => {
                 return <Link key={item._id} to={item._id === state._id ? "/profile" : "/profile/" + item._id} onClick={() => {
                   M.Modal.getInstance(searchModal.current).close()
-                  setSearch('')
+                  setSearch('');
+                  setUsersDetails([]);
                 }}>
                   <li className="collection-item">{item.name} - {item.email}</li>
                 </Link>   
@@ -94,7 +95,7 @@ const Navbar = () => {
           }
         </div>
         <div className="modal-footer">
-          <button className="modal-close waves-effect waves-green btn-flat" onClick={() => setSearch('')}>close</button>
+          <button className="modal-close waves-effect waves-green btn-flat" onClick={() => { setSearch(''); setUsersDetails([]) }}>close</button>
         </div>
       </div>
     </nav>
