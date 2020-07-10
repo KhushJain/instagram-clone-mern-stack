@@ -7,7 +7,7 @@ import axios from 'axios';
 
 // Server's base url used in axios requests
 // For production mode comment the next line
-axios.defaults.baseURL = "http://localhost:5000";  
+// axios.defaults.baseURL = "http://localhost:5000";  
 
 
 ReactDOM.render(
