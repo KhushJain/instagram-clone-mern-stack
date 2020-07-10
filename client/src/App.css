@@ -1,11 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
 a {
     color: black !important;
 }
 
 .brand-logo, h2 {
-    font-family: 'Grand Hotel', cursive;
+    font-family: 'Great Vibes', cursive;
 }
 
 .mycard {

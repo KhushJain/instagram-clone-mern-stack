@@ -68,7 +68,7 @@ const Navbar = () => {
     <>
       <nav>
       <div className="nav-wrapper white">
-        <Link to={state?"/": "/signin"} className="brand-logo">Instagram</Link>
+        <Link to={state?"/": "/signin"} className="brand-logo">Worldia</Link>
         <a href="#" className="sidenav-trigger" data-target="mobile-links">
           <i className="material-icons">menu</i>
         </a>

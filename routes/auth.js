@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
                 to: user.email,
                 from: `${EMAIL}`,
                 subject: "Sign up Successful!",
-                html: `<h2>Welcome to Instagram, ${user.name}.<h2><h3>We are here to help you connect and share your thoughts with the world!</h3>`
+                html: `<h2>Welcome to Worldia, ${user.name}.<h2><h3>We are here to help you connect and share your thoughts with the world!</h3>`
             })
         
             res.json({ message: "Account Created!" });
@@ -98,6 +98,7 @@ router.post('/resetpassword', (req, res) => {
                             from: `${EMAIL}`,
                             subject: "Reset Password",
                             html: `
+                            <h3>Worldia</h3>
                             <p>You have requested for password reset.</p>
                             <h5>Click on this <a href="${EMAILURL}/reset/${token}">link</a> to reset the password</h5>
                             `

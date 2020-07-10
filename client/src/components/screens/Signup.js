@@ -76,7 +76,7 @@ const Signup = () => {
 
     let display = (
         <div className="card auth-card input-field">
-            <h2>Instagram</h2>
+            <h2>Worldia</h2>
             <input type="text" placeholder="name" value={name} onChange={(event) => setName(event.target.value)} />
             <input type="text" placeholder="email" value={email} onChange={(event) => setEmail(event.target.value)} />
             <input type="password" placeholder="password" value={password} onChange={(event) => setPassword(event.target.value)} />
