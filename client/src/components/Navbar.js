@@ -15,17 +15,19 @@ const Navbar = () => {
 
   useEffect(() => {
     M.Modal.init(searchModal.current);
+    let sidenav = document.querySelector('#mobile-links');
+    M.Sidenav.init(sidenav, {});
   }, [])
 
 
   const renderList = () => {
     if (state) {
       return [
-        <li key="1"><i data-target="modal1" className="large material-icons modal-trigger" style={{ color: "black", cursor:"pointer" }}>search</i></li>,
-        <li key="2"><Link to="/profile">Profile</Link></li>,
-        <li key="3"><Link to="/create">Create Post</Link></li>,
-        <li key="4"><Link to="/myfollowingposts">My Following Posts</Link></li>,
-        <li key="5">
+        <li className="sidenav-close" key="1"><i data-target="modal1" className="large material-icons modal-trigger" style={{ color: "black", cursor:"pointer" }}>search</i></li>,
+        <li className="sidenav-close" key="2"><Link to="/profile">Profile</Link></li>,
+        <li className="sidenav-close" key="3"><Link to="/create">Create Post</Link></li>,
+        <li className="sidenav-close" key="4"><Link to="/myfollowingposts">My Following Posts</Link></li>,
+        <li className="sidenav-close" key="5">
           <button className="btn #c62828 red darken-3"
             onClick={() =>{
                 localStorage.clear()
@@ -38,8 +40,8 @@ const Navbar = () => {
       ];
     } else {
         return [
-          <li key="6"><Link to="/signin">Sign in</Link></li>,
-          <li key="7"><Link to="/signup">Sign up</Link></li>
+          <li className="sidenav-close" key="6"><Link to="/signin">Sign in</Link></li>,
+          <li className="sidenav-close" key="7"><Link to="/signup">Sign up</Link></li>
         ];
     }
   };
@@ -63,10 +65,14 @@ const Navbar = () => {
 
 
   return (
+    <>
       <nav>
       <div className="nav-wrapper white">
-        <Link to={state?"/": "/signin"} className="brand-logo left">Instagram</Link>
-        <ul id="nav-mobile" className="right">
+        <Link to={state?"/": "/signin"} className="brand-logo">Instagram</Link>
+        <a href="#" className="sidenav-trigger" data-target="mobile-links">
+          <i className="material-icons">menu</i>
+        </a>
+        <ul id="nav-mobile" className="right hide-on-med-and-down">
           {renderList()}
         </ul>
       </div>
@@ -92,6 +98,10 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
+    <ul className="sidenav" id="mobile-links">
+      {renderList()}
+    </ul>
+    </>
   );
 };
 
