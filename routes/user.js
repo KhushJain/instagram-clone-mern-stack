@@ -102,7 +102,7 @@ router.post('/searchusers', requireLogin, (req, res) => {
 
 
 router.delete('/deleteaccount', requireLogin, (req, res) => {
-    userId = req.user._id
+    let userId = req.user._id
     User.findById(userId)
         .then(user => {
             user.followers.map(followersId => {
@@ -128,6 +128,37 @@ router.delete('/deleteaccount', requireLogin, (req, res) => {
                 })
         })
         })
+
+    Post.find({ "comments.postedBy": userId })
+        .then(posts => {
+            posts.map(post => {
+                post.comments = post.comments.filter(item => item.postedBy.toString() !== userId.toString());
+                let index = post.likes.indexOf(userId)
+                if (index !== -1 ) post.likes.splice(index, 1);
+                post.save()
+                    .catch(e => {
+                        console.log(e);
+                    });
+            });
+        })
+        .catch(e => {
+            console.log(e);
+        })
+
+    Post.find({ likes: userId })
+        .then(posts => {
+            posts.map(post => {
+                post.likes.splice(post.likes.indexOf(userId), 1);
+                post.save()
+                    .catch(e => {
+                        console.log(e);
+                    });
+            });
+        })
+        .catch(e => {
+            console.log(e);
+        })  
+
     User.deleteOne({ _id: userId }, (err, result) => {
         if (err) {
             return res.json({ error: err });
