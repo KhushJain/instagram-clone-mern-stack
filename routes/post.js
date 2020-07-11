@@ -185,4 +185,17 @@ router.post('/likedusers', requireLogin, (req, res) => {
 });
 
 
+router.get('/post/:postid', requireLogin, (req, res) => {
+    Post.findOne({ _id: req.params.postid })
+    .populate('postedBy', '_id name')
+    .populate('comments.postedBy', '_id name')
+    .then(post => {
+        res.json({ post: post });
+    })
+    .catch(e => {
+        console.error(e);
+    });
+});
+
+
 module.exports = router;

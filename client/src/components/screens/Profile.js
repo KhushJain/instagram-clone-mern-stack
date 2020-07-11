@@ -3,7 +3,7 @@ import { UserContext } from '../../App';
 import axios from 'axios';
 import M from 'materialize-css';
 import Spinner from '../Spinner';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -124,7 +124,8 @@ const Profile = () => {
         <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
             {
                 mypics.map(item => (
-                    <img key={item._id} style={{ width: "30%" }} src={item.photo} alt={item.title}/>
+                    
+                    <img key={item._id} style={{ width: "30%", cursor:"pointer" }} src={item.photo} alt={item.title} onClick={() => { history.push(`/post/${item._id}`) }}/>
 
                 ))
             }

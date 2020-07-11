@@ -172,7 +172,9 @@ const Home = () => {
                             }
                         </h5>
                         <div className="card-image">
-                            <img src={item.photo} />
+                            <Link to={"post/" + item._id} >
+                                <img src={item.photo} />
+                            </Link>
                         </div>
                         <div className="card-content">
                             {

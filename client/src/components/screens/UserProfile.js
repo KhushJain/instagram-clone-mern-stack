@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { UserContext } from '../../App';
 import axios from 'axios';
 import Spinner from '../Spinner';
 
 const UserProfile = () => {
 
+    const history = useHistory();
     const [userProfile, setUserProfile] = useState(null);
     const { state, dispatch } = useContext(UserContext);
     const { userid } = useParams();
@@ -114,7 +115,7 @@ const UserProfile = () => {
                 <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-around" }}>
                     {
                         userProfile.posts.map(item => (
-                            <img key={item._id} style={{ width: "30%" }} src={item.photo} alt={item.title}/>
+                            <img key={item._id} style={{ width: "30%", cursor:"pointer" }} src={item.photo} alt={item.title}  onClick={() => { history.push(`/post/${item._id}`) }}/>
     
                         ))
                     }
