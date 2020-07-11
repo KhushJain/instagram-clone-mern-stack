@@ -78,7 +78,7 @@ const Navbar = () => {
       </div>
       <div id="modal1" className="modal" ref={searchModal} style={{ color: "black" }}>
         <div className="modal-content">
-          <input type="text" placeholder="search users by email" value={search} onChange={(event) => fetchUsers(event.target.value)} />
+          <input type="text" placeholder="search users by email" value={search} onChange={(event) => fetchUsers(event.target.value.toLowerCase())} />
           {state ?
           <ul className="collection">
             { usersDetails.map(item => {

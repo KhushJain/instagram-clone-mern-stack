@@ -7,7 +7,7 @@ const User = mongoose.model('User');
 
 router.get('/allpost', requireLogin, (req, res) => {
     Post.find()
-        .populate('postedBy', '_id name')
+        .populate('postedBy', '_id name profilePhoto')
         .populate('comments.postedBy', '_id name')
         .sort('-createdAt')
         .then(posts => {
@@ -21,7 +21,7 @@ router.get('/allpost', requireLogin, (req, res) => {
 
 router.get('/getsubscribedposts', requireLogin, (req, res) => {
     Post.find({ postedBy: {$in: req.user.following} })
-        .populate('postedBy', '_id name')
+        .populate('postedBy', '_id name profilePhoto')
         .populate('comments.postedBy', '_id name')
         .sort('-createdAt')
         .then(posts => {
@@ -51,7 +51,7 @@ router.post('/createpost', requireLogin, (req, res) => {
 
 router.get('/mypost', requireLogin, (req, res) => {
     Post.find({ postedBy: req.user._id })
-        .populate('postedBy', '_id name')
+        .populate('postedBy', '_id name profilePhoto')
         .then(myposts => {
             res.json({ myposts: myposts });
         })
@@ -67,7 +67,7 @@ router.put('/like', requireLogin, (req, res) => {
     }, {
         new: true
     })
-    .populate('postedBy', '_id name')
+    .populate('postedBy', '_id name profilePhoto')
     .populate('comments.postedBy', '_id name')
     .exec((err, result) => {
         if (err) {
@@ -84,7 +84,7 @@ router.put('/unlike', requireLogin, (req, res) => {
     }, {
         new: true
     })
-    .populate('postedBy', '_id name')
+    .populate('postedBy', '_id name profilePhoto')
     .populate('comments.postedBy', '_id name')
     .exec((err, result) => {
         if (err) {
@@ -106,7 +106,7 @@ router.put('/comment', requireLogin, (req, res) => {
         new: true
     })
     .populate('comments.postedBy', '_id name')
-    .populate('postedBy', '_id name')
+    .populate('postedBy', '_id name profilePhoto')
     .exec((err, result) => {
         if (err) {
             return res.json({error: err});
@@ -152,7 +152,7 @@ router.delete('/deletecomment/:postId/:commentId', requireLogin, (req, res) => {
         post.save()
         .then(result => {
             Post.findOne({_id: result.id})
-            .populate('postedBy', '_id name')
+            .populate('postedBy', '_id name profilePhoto')
             .populate('comments.postedBy', '_id name')
             .exec((e, post) => {
                 if (err || !post) {
@@ -187,7 +187,7 @@ router.post('/likedusers', requireLogin, (req, res) => {
 
 router.get('/post/:postid', requireLogin, (req, res) => {
     Post.findOne({ _id: req.params.postid })
-    .populate('postedBy', '_id name')
+    .populate('postedBy', '_id name profilePhoto')
     .populate('comments.postedBy', '_id name')
     .then(post => {
         res.json({ post: post });
