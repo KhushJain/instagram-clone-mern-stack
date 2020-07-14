@@ -25,7 +25,7 @@ A responsive social media app where users can post images, like and unlike other
 - View individual post
 - Search users by their email
 - User receives a welcome email after signing up
-- User receives an email for reseting the password
+- User receives an email for resetting the password
 - Responsive website
 
 ## Libraries used:
