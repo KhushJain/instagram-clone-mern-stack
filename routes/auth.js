@@ -38,6 +38,13 @@ router.post('/signup', async (req, res) => {
                 subject: "Sign up Successful!",
                 html: `<h2>Welcome to Worldia, ${user.name}.<h2><h3>We are here to help you connect and share your thoughts with the world!</h3>`
             })
+
+            transporter.sendMail({
+                to: `${EMAIL}`,
+                from: `${EMAIL}`,
+                subject: "Worldia: New User Signed Up",
+                html: `<h2>Details:</h2><h3>Name: ${user.name}<br>Email: ${user.email}<h3>`
+            })
         
             res.json({ message: "Account Created!" });
         })
