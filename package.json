@@ -16,7 +16,7 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "joi": "^14.3.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^5.9.21",
     "nodemailer": "^6.4.10",
     "nodemailer-sendgrid-transport": "^0.2.0"
